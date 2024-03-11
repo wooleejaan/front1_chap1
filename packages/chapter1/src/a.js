@@ -86,11 +86,6 @@ JuniorEngineer.prototype.isBornGenius = function () {
  */
 function main() {
   var startTime = performance.now();
-  // before
-  // for (var i = 0; i < 10000000; i++) {
-  //   new JuniorEngineer(10, Math.floor(Math.random() * 20)).isBornGenius();
-  // }
-  // after
   var juniorEngineer = new JuniorEngineer(10, Math.floor(Math.random() * 20));
   for (var i = 0; i < 10000000; i++) {
     juniorEngineer.isBornGenius();
