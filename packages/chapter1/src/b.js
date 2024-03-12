@@ -31,16 +31,27 @@ class HardWork {
     this._tasks = this._initTasks();
   }
 
+  // do() {
+  //   let index = 0;
+  //   const runTaskWithMacroTaskQueue = () => {
+  //     if (index < this._tasks.length) {
+  //       this._tasks[index]();
+  //       index++;
+  //       setTimeout(runTaskWithMacroTaskQueue, 0);
+  //     }
+  //   };
+  //   runTaskWithMacroTaskQueue();
+  // }
   do() {
     let index = 0;
-    const runTaskWithMacroTaskQueue = () => {
+    const runTaskWithAnimationFrame = () => {
       if (index < this._tasks.length) {
         this._tasks[index]();
         index++;
-        setTimeout(runTaskWithMacroTaskQueue, 0);
+        requestAnimationFrame(runTaskWithAnimationFrame);
       }
     };
-    runTaskWithMacroTaskQueue();
+    runTaskWithAnimationFrame();
   }
 
   // do() 이외의 메서드는 수정하지마세요
