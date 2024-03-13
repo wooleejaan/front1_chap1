@@ -30,28 +30,44 @@ class HardWork {
     this._result = 0;
     this._tasks = this._initTasks();
   }
-
-  // do() {
-  //   let index = 0;
-  //   const runTaskWithMacroTaskQueue = () => {
-  //     if (index < this._tasks.length) {
-  //       this._tasks[index]();
-  //       index++;
-  //       setTimeout(runTaskWithMacroTaskQueue, 0);
-  //     }
-  //   };
-  //   runTaskWithMacroTaskQueue();
-  // }
   do() {
     let index = 0;
-    const runTaskWithAnimationFrame = () => {
-      if (index < this._tasks.length) {
-        this._tasks[index]();
-        index++;
-        requestAnimationFrame(runTaskWithAnimationFrame);
-      }
+    // [풀이 1] => setTimeout을 활용
+    // const runTaskWithMacroTaskQueue = () => {
+    //   if (index < this._tasks.length) {
+    //     this._tasks[index]();
+    //     index++;
+    //     setTimeout(runTaskWithMacroTaskQueue, 0);
+    //   }
+    // };
+    // runTaskWithMacroTaskQueue();
+
+    // [풀이 2] => requestAnimationFrame을 활용
+    // const runTaskWithAnimationFrame = () => {
+    //   if (index < this._tasks.length) {
+    //     this._tasks[index]();
+    //     index++;
+    //     requestAnimationFrame(runTaskWithAnimationFrame);
+    //   }
+    // };
+    // runTaskWithAnimationFrame();
+
+    // [풀이 3] => promise를 사용한 micro task 처리
+    const runTaskFromMicroTask = () => {
+      return new Promise((resolve) => {
+        if (index < this._tasks.length) {
+          this._tasks[index]();
+          index++;
+          requestAnimationFrame(() => {
+            runTaskFromMicroTask().then(resolve);
+          });
+        } else {
+          resolve();
+        }
+      });
     };
-    runTaskWithAnimationFrame();
+
+    return runTaskFromMicroTask();
   }
 
   // do() 이외의 메서드는 수정하지마세요
