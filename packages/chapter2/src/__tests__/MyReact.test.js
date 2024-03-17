@@ -87,5 +87,29 @@ describe('MyReact > ', () => {
         expect($root.innerHTML).toBe(`<div><p>1번째 자식</p><p>2번째 자식</p><p>3번째 자식</p></div>`);
       })
     })
+
+    describe("useMemo > ", () => {
+      test("의존성 배열에 값을 추가하지 않으면 값은 변화하지 않는다.", () => {
+        let fn = null;
+        const App = () => {
+          const [level, setLevel] = react.useState(3);
+
+          fn = setLevel;
+
+          const memoizedLevel = react.useMemo(() => level + 1, []);
+
+          return jsx("div", null, `현재 level: ${memoizedLevel}`);
+        };
+
+        const $root = document.createElement("div");
+        react.render($root, App);
+
+        expect($root.innerHTML).toBe(`<div>현재 level: 4</div>`);
+
+        fn(5);
+
+        expect($root.innerHTML).toBe(`<div>현재 level: 4</div>`);
+      });
+    });
   })
 })
