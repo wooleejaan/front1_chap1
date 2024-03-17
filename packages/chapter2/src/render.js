@@ -16,7 +16,8 @@ export function createElement(node) {
 
   updateAttributes(element, node.props, {});
 
-  node.children.map(createElement).forEach(element.appendChild.bind(element));
+  const children = node.children || [];
+  children.map(createElement).forEach(element.appendChild.bind(element));
 
   return element;
 }
