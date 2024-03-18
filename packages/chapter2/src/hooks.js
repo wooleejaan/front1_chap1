@@ -17,8 +17,11 @@ export function createHooks(callback) {
           typeof newState === "function"
             ? newState(states[currentIndex])
             : newState;
-        states[currentIndex] = resolvedState;
-        render();
+        // 현재 상태와 새로운 상태가 같은지 비교
+        if (states[currentIndex] !== resolvedState) {
+          states[currentIndex] = resolvedState;
+          render();
+        }
       }
     };
 
