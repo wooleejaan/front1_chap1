@@ -9,12 +9,14 @@ export function createHooks(callback) {
     memos: [],
   };
 
+  let requestAnimationFrameId = undefined;
   let pendingRender = false;
 
   function resetContext() {
     stateContext.current = 0;
     memoContext.current = 0;
     pendingRender = false;
+    requestAnimationFrameId = undefined;
   }
 
   const useState = (initState) => {
@@ -26,6 +28,10 @@ export function createHooks(callback) {
     const setState = (newState) => {
       if (newState === states[current]) return;
       states[current] = newState;
+      if (requestAnimationFrameId !== null) {
+        cancelAnimationFrame(requestAnimationFrameId);
+      }
+
       if (!pendingRender) {
         // pendingRender flag를 사용해서  다음 frame에서 callback 함수를 실행하도록 batch 처리.
         pendingRender = true;
